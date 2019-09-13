@@ -3,18 +3,12 @@
   margin: 0;
 }
 
-.reveal pre {
-  box-shadow: none;
-}
-
 .license {
   font-size: 1rem;
 }
 
 .license img {
   display:inline;
-
-  border: 0;
 
   vertical-align: middle;
 }

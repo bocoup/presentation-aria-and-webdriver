@@ -135,8 +135,8 @@ User --------> Assistive Technology -------->| ARIA |   |   |
   <h2>Developer incentives: less test code</h2>
 
   <aside class="notes">
-    Less code (a single WebDriver command like "Push Button" abstracts multiple
-    interactions that must otherwise be expressed imperatively)
+    <p>A single WebDriver command like "Push Button" abstracts multiple
+    interactions that must otherwise be expressed imperatively.</p>
   </aside>
 </section>
 
@@ -144,8 +144,8 @@ User --------> Assistive Technology -------->| ARIA |   |   |
   <h2>Developer incentives: improved test stability</h2>
 
   <aside class="notes">
-    Commands can pause following interaction until UI is known to be updated
-    according to widget semantics, reducing risk of race conditions
+    <p>Commands can pause following interaction until UI is known to be updated
+    according to widget semantics, reducing risk of race conditions.</p>
   </aside>
 </section>
 
@@ -153,8 +153,16 @@ User --------> Assistive Technology -------->| ARIA |   |   |
   <h2>Developer incentives: accessibility verified</h2>
 
   <aside class="notes">
-    You don't need to know ARIA to use these commands, though the commands can
-    teach you when they fail
+    <p>Just as end users don't need to know ARIA to use the widgets, developers
+    don't need to know ARIA to use these commands. However, the commands can
+    teach developers by reporting errors when the application under test
+    violates some expectation.</p>
+
+    <p>This kind of implicit verification would be useful even to accessibility
+    experts who rely on third-party UI components. Not only could they hold
+    their existing tests constant while refactoring (i.e. a time when the
+    stability of requirements is critical), but those tests would quickly
+    verify the conformance of any new components.</p>
   </aside>
 </section>
 

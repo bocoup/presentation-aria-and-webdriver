@@ -1,49 +1,200 @@
-<!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+        <title>ARIA &amp; WebDriver</title>
 
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/sky.css">
+        <link rel="stylesheet" href="css/customizations.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/monokai.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+<section>
+  <hgroup>
+    <p>TPAC 2019</p>
+    <h1>ARIA &amp; WebDriver</h1>
+  </hgroup>
 
-		<script src="js/reveal.js"></script>
+  <p>Promoting accessibility by incentivizing web developers with tools that simplify testing accessible applications</p>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true }
-				]
-			});
-		</script>
-	</body>
+  <div class="license">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <img alt="Creative Commons License" src="./cc-by-sa.png" /></a>
+    This presentation is licensed under a
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+  </div>
+</section>
+
+<section>
+  <h2>About us</h2>
+
+  <p><a href="https://bocoup.com">Bocoup</a>, a technical consultancy specializing in web platform interoperability</p>
+  <p>Valerie Young (<a href="https://twitter.com/spectranaut">@spectranaut</a>)</p>
+  <p>Simon Pieters (<a href="https://twitter.com/zcorpan">@zcorpan</a>)</p>
+  <p>Mike Pennisi (<a href="https://twitter.com/jugglinmike">@jugglinmike</a>)</p>
+</section>
+
+<section>
+  <h2>ARIA &amp; WebDriver</h2>
+
+  <aside class="notes">
+    <a href="https://w3c.github.io/aria/">WAI-ARIA</a> and <a
+        href="https://w3c.github.io/webdriver/">WebDriver</a> are distinct web
+    standards with highly similar goals: they both aim to enable
+    machine-mediated interaction with web pages. In the case of ARIA, the
+    machine is some Assistive Technology (e.g. a screen reader or a braille
+    display), and it enables a person with a disability to effectively browse
+    the web. In the case of WebDriver, the machine is a script written by a web
+    developer, and it enables the developer to verify the correctness of their
+    work.
+  </aside>
+</section>
+
+<section>
+  <figure>
+    <pre role="img">
+                                             .--------------.
+                                             | Application  |
+                                             +----------.   |
+Developer --> page objects ---> WebDriver -->| HTML     |   |
+                                             +------.   |   |
+User --------> Assistive Technology -------->| ARIA |   |   |
+                                             '------+---+---'
+    </pre>
+    <figcaption>
+      Depiction of "paths" used to interact with web applications, comparing the
+      path of the web developer with the path of the user.
+    </figcaption>
+  </figure>
+  
+  <aside class="notes">
+    The differences in the paths used by developers and users to access web
+    applications cause a number of problems. Web developers have little insight
+    into the correctness of their application from the perspective of a visitor
+    using Assistive Technology. Instead, they typically build a separate layer to
+    facilitate testing, comprised of so-called <a
+    href="http://elementalselenium.com/tips/7-use-a-page-object">page objects"</a>.
+    This layer commonly circumvents the patterns used by Assistive Technology.
+    Maintaining it is a drain on their time and attention, and it only indirectly
+    benefits the people who use the application (i.e. by enabling a limited form of
+    testing).
+  </aside>
+</section>
+
+<section>
+  <figure>
+    <pre role="img">
+                                             .--------------.
+                                             | Application  |
+                                             +----------.   |
+Developer ---> ARIA-aware WebDriver --.      | HTML     |   |
+                                       \     +------.   |   |
+User --------> Assistive Technology -------->| ARIA |   |   |
+                                             '------+---+---'
+    </pre>
+    <figcaption>
+      Depiction of "paths" used to interact with web applications, where the
+        path of the web developer converges with the path of the user.
+    </figcaption>
+  </figure>
+  
+  <aside class="notes">
+    Today, many web developers test their applications using "page objects"
+    which use WebDriver to interact with the HTML of their application. This
+    contrasts with users with disabilities, who use Assistive Technology to
+    interact with the accessibility tree exposed by the application.
+  </aside>
+</section>
+
+<section>
+  <h2>Developer incentives</h2>
+
+  <p>Less test code</p>
+  <p>Improved test stability</p>
+  <p>Accessibility verified</p>
+</section>
+
+<section>
+  <h2>Developer incentives: less test code</h2>
+
+  <aside class="notes">
+    Less code (a single WebDriver command like "Push Button" abstracts multiple
+    interactions that must otherwise be expressed imperatively)
+  </aside>
+</section>
+
+<section>
+  <h2>Developer incentives: improved test stability</h2>
+
+  <aside class="notes">
+    Commands can pause following interaction until UI is known to be updated
+    according to widget semantics, reducing risk of race conditions
+  </aside>
+</section>
+
+<section>
+  <h2>Developer incentives: accessibility verified</h2>
+
+  <aside class="notes">
+    You don't need to know ARIA to use these commands, though the commands can
+    teach you when they fail
+  </aside>
+</section>
+
+<section>
+  <h2>Demonstration</h2>
+
+  <p><a href="https://github.com/jugglinmike/ariadriver">ariadriver</a> - A Node.js library for testing web applications using WebDriver and ARIA (see also: <a href="https://jugglinmike.github.io/ariadriver/">API documentation</a>)</p>
+
+  <p><a href="https://bocoup.github.io/aria-practices/aria-practices.html#automation">"Push Button"</a> - a WebDriver extension command abstracting user interaction with <a href="https://w3c.github.io/aria-practices/#button">the APG "Button" widget</a></p>
+</section>
+
+<section>
+  <h2>Discussion</h2>
+  
+  <p>Stale element references</p>
+  <p>"Preferred input mode"</p>
+  <p>Guideline stability</p>
+  <p>Publication</p>
+</section>
+            </div>
+        </div>
+
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                hash: true,
+                progress: false,
+                showNotes: true,
+                slideNumber: true,
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true }
+                ]
+            });
+        </script>
+    </body>
 </html>

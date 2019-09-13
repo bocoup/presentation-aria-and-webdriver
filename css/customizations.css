@@ -1,0 +1,24 @@
+.reveal section hgroup h3 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.reveal pre {
+  box-shadow: none;
+}
+
+.license {
+  font-size: 1rem;
+}
+
+.license img {
+  display:inline;
+
+  border: 0;
+
+  vertical-align: middle;
+}
+
+figure figcaption {
+  display: none;
+}

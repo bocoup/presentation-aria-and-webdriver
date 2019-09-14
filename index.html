@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="css/customizations.css">
 
         <!-- Theme used for syntax highlighting of code -->
-        <link rel="stylesheet" href="lib/css/monokai.css">
+        <link rel="stylesheet" href="lib/css/zenburn.css">
 
         <!-- Printing and PDF exports -->
         <script>
@@ -138,9 +138,61 @@ User --------> Assistive Technology -------->| ARIA |   |   |
 
   <p>Less test code</p>
 
+  <pre><code data-trim>
+    const radios = await webdriver.findElements(
+      By.css('[role="radio"]')
+    );
+    for (const radio of radios) {
+      if (await radio.getText() === 'Thin crust') {
+        await radio.click();
+      }
+    }
+  </code></pre>
+
   <aside class="notes">
-    <p>A single WebDriver command like "Push Button" abstracts multiple
-    interactions that must otherwise be expressed imperatively.</p>
+    <p>Interacting with some widgets requires multiple commands and sometimes
+    involves non-trivial control flow.</p>
+  </aside>
+</section>
+
+<section>
+  <h2>Developer incentives</h2>
+
+  <p>Less test code (continued)</p>
+
+  <pre><code data-trim>
+    function accessibleName(el) { /* ... */ }
+    function focus(el) { /* ... */ }
+    const radios = await webdriver.findElements(
+      By.css('[role="radio"]')
+    );
+    for (const radio of radios) {
+      if (await accessibleName(radio) === 'Thin crust') {
+        await focus(radio);
+        await radio.sendKeys(Key.ENTER);
+      }
+    }
+  </code></pre>
+
+  <pre class="fragment"><code data-trim>
+    webdriver.setRadio('Thin crust');
+  </code></pre>
+
+  <aside class="notes">
+    <p>Developers who are familiar with best practices need to maintain even
+    more code to operate on accessibility primitives using WebDriver's
+    low-level API.</p>
+
+    <p>Today, developers frequently encapsulate code like this using a
+    pattern called "<a
+    href="http://elementalselenium.com/tips/7-use-a-page-object">page
+    objects</a>". This reduces maintenance costs to some extent, but it does
+    not eliminate them.</p>
+
+    <p>A single WebDriver command like "Set Radio" would reduce the amount of
+    code developers have to maintain, and and it would make tests more
+    declarative. For applications which are composed of conventional widgets,
+    ARIA-aware WebDriver commands could obviate the need for this practice.</p>
   </aside>
 </section>
 
@@ -148,6 +200,37 @@ User --------> Assistive Technology -------->| ARIA |   |   |
   <h2>Developer incentives</h2>
 
   <p>Improved test stability</p>
+
+  <pre><code data-trim>
+    const opener = await webdriver.findElement(
+      By.css('[aria-haspopup]')
+    await opener.click();
+    await webdriver.findElement('[role="menu"] button');
+                    ^ NoSuchElementError: An element could not
+                                          be located on the page
+                                          using the given search
+                                          parameters.
+  </code></pre>
+
+  <pre class="fragment"><code data-trim>
+    await webdriver.openPopup();
+    await webdriver.findElement('[role="menu"] button');
+  </code></pre>
+
+  <aside class="notes">
+    <p>Test authors frequently assume that their application's interface is
+    updated immediately following user interaction. There are many factors that
+    can violate this assumption. <a
+    href="https://bocoup.com/blog/a-day-at-the-races">Unless developers are
+    careful to verify the UI's response following every interaction, they will
+    inadvertently create tests that fail erratically.</a></p>
+
+    <p>ARIA and the APG specify details on how UIs should respond to user
+    interaction. ARIA-aware WebDriver commands could make use of these details,
+    pausing following interaction until the UI is updated as expected. As a
+    result, developers would enjoy more predictable tests.</p>
+  </aside>
+</section>
 
   <aside class="notes">
     <p>Commands can pause following interaction until UI is known to be updated
@@ -160,17 +243,17 @@ User --------> Assistive Technology -------->| ARIA |   |   |
 
   <p>Accessibility verified</p>
 
+  <pre><code data-trim>
+    element.pushButton();
+            ^ Error: Accessible name of toggle button
+                     inappropriately changed following push
+  </code></pre>
+
   <aside class="notes">
     <p>Just as end users don't need to know ARIA to use the widgets, developers
-    don't need to know ARIA to use these commands. However, the commands can
+    won't need to know ARIA to use these commands. However, the commands can
     teach developers by reporting errors when the application under test
     violates some expectation.</p>
-
-    <p>This kind of implicit verification would be useful even to accessibility
-    experts who rely on third-party UI components. Not only could they hold
-    their existing tests constant while refactoring (i.e. a time when the
-    stability of requirements is critical), but those tests would quickly
-    verify the conformance of any new components.</p>
   </aside>
 </section>
 
@@ -205,8 +288,6 @@ User --------> Assistive Technology -------->| ARIA |   |   |
                 showNotes: true,
                 slideNumber: true,
                 dependencies: [
-                    { src: 'plugin/markdown/marked.js' },
-                    { src: 'plugin/markdown/markdown.js' },
                     { src: 'plugin/notes/notes.js', async: true },
                     { src: 'plugin/highlight/highlight.js', async: true }
                 ]

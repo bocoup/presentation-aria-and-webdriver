@@ -130,6 +130,7 @@ User --------> Assistive Technology -------->| ARIA |   |   |
 
   <p>Less test code</p>
   <p>Improved test stability</p>
+  <p>Improved test resiliency</p>
   <p>Accessibility verified</p>
 </section>
 
@@ -232,9 +233,36 @@ User --------> Assistive Technology -------->| ARIA |   |   |
   </aside>
 </section>
 
+<section>
+  <h2>Developer incentives</h2>
+
+  <p>Improved test resiliency</p>
+
+  <pre><code data-trim>
+    const closeBtn = await webdriver.findElement(
+      By.css('#modal button.close')
+    );
+    await closeBtn.click();
+  </code></pre>
+
+  <pre class="fragment"><code>webdriver.closeModal();</code></pre>
+
   <aside class="notes">
-    <p>Commands can pause following interaction until UI is known to be updated
-    according to widget semantics, reducing risk of race conditions.</p>
+    <p>It's all too easy for developers to write brittle tests. When writing in
+    terms of DOM elements, less experienced testers will use a "whatever works"
+    strategy to get a test running.</p>
+
+    <p>Code like this depends on implementation details that are subject to
+    change with any refactoring. Maintaining that is a tiresome distraction for
+    many developers.</p>
+
+    <p>An application's accessibility tree is far more stable. Tests written
+    against the accessibility tree are naturally more resilient. The widgets
+    defined in the APG specify even more stable structure.</p>
+
+    <p>This isn't to say tests written like this won't need maintenance--if the
+    modal is removed, the test will have to change--but they won't have
+    developers chasing down new CSS selectors.</p>
   </aside>
 </section>
 

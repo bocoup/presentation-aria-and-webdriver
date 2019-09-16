@@ -282,7 +282,7 @@ User --------> Assistive Technology -------->| ARIA |   |   |
 
     For push buttons, ARIA requires that the accessible name is not changed
     as a result of changing the state of a push button. This can be checked
-    by the pushButton() command.</p>
+    by the <code>pushButton()</code> command.</p>
   </aside>
 </section>
 
@@ -305,7 +305,7 @@ User --------> Assistive Technology -------->| ARIA |   |   |
   <aside class="notes">
     <p>Stale element references can happen, this proposal doesn't change that.
     However, the existing WebDriver commands just do some interaction and then resolve.
-    The `pushButton()` command does some interaction and then verifies accessible name,
+    The <code>pushButton()</code> command does some interaction and then verifies accessible name,
     which assumes that the element reference is not stale. This is a new problem.</p>
     <p>Preferred input mode: only testing the code path dedicated to assistive technology misses the corresponding code path for mouse users.
     The new commands can test both code paths by running a test twice in the two different modes.</p>

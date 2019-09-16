@@ -201,6 +201,7 @@ User --------> Assistive Technology -------->| ARIA |   |   |
   <pre><code data-trim>
     const opener = await webdriver.findElement(
       By.css('[aria-haspopup]')
+    );
     await opener.click();
     await webdriver.findElement('[role="menu"] button');
                     ^ NoSuchElementError: An element could not

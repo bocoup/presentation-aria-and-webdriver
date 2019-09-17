@@ -115,9 +115,9 @@ User --------> Assistive Technology -------->| ARIA |   |   |
   </figure>
 
   <aside class="notes">
-    WebDriver could be extended to interact through the accessibility tree.
-    This way the web developer using WebDriver and the user using AT both
-    use the same path for a particular thing.
+    WebDriver could be extended with new commands which interact through the accessibility tree.
+    This way the web developer using WebDriver and the user using assistive
+    technology share a more similar understanding of the application.
   </aside>
 </section>
 
@@ -282,7 +282,7 @@ User --------> Assistive Technology -------->| ARIA |   |   |
 
     For push buttons, ARIA requires that the accessible name is not changed
     as a result of changing the state of a push button. This can be checked
-    by the pushButton() command.</p>
+    by the <code>pushButton()</code> command.</p>
   </aside>
 </section>
 
@@ -305,9 +305,9 @@ User --------> Assistive Technology -------->| ARIA |   |   |
   <aside class="notes">
     <p>Stale element references can happen, this proposal doesn't change that.
     However, the existing WebDriver commands just do some interaction and then resolve.
-    The `pushButton()` command does some interaction and then verifies accessible name,
+    The <code>pushButton()</code> command does some interaction and then verifies accessible name,
     which assumes that the element reference is not stale. This is a new problem.</p>
-    <p>Preferred input mode: only testing the AT code path misses the mouse user code path.
+    <p>Preferred input mode: only testing the code path dedicated to assistive technology misses the corresponding code path for mouse users.
     The new commands can test both code paths by running a test twice in the two different modes.</p>
     <p>Guidelines stability: The examples in APG might still change, which would require WebDriver commands
     that rely on them to also change. This could break existing tests.</p>
